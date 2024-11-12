@@ -1,0 +1,67 @@
+{% extends 'Master/welcome.html.twig' %}
+
+{% block title %}Patient Index{% endblock %}
+
+{% block body %}
+<div class="card my-4">
+    <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+        <div class="bg-gradient-dark shadow-dark border-radius-lg pt-4 pb-3">
+            <h6 class="text-white text-capitalize ps-3">Patient Index</h6>
+        </div>
+    </div>
+
+    <div class="card-body px-0 pb-2">
+        <div class="table-responsive p-0">
+            <div class="d-flex justify-content-end px-3 pb-3">
+                <a href="{{ path('app_patient_new') }}" class="btn btn-success">Create New</a>
+            </div>
+
+            <table class="table align-items-center mb-0">
+                <thead>
+                    <tr>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">First Name</th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Last Name</th>
+                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Age</th>
+                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Date of Birth</th>
+                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Medical History</th>
+                        <th class="text-secondary opacity-7"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for patient in patients %}
+                        <tr>
+                            <td>
+                                <div class="d-flex px-2 py-1">
+                                    <div class="d-flex flex-column justify-content-center">
+                                        <h6 class="mb-0 text-sm">{{ patient.FirstName }}</h6>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <p class="text-xs font-weight-bold mb-0">{{ patient.LastName }}</p>
+                            </td>
+                            <td class="align-middle text-center">
+                                <span class="text-secondary text-xs font-weight-bold">{{ patient.Age }}</span>
+                            </td>
+                            <td class="align-middle text-center">
+                                <span class="text-secondary text-xs font-weight-bold">{{ patient.DateOfBirth ? patient.DateOfBirth|date('Y-m-d') : '' }}</span>
+                            </td>
+                            <td class="align-middle text-center">
+                                <span class="text-secondary text-xs font-weight-bold">{{ patient.MedicalHistory }}</span>
+                            </td>
+                            <td class="align-middle">
+                                <a href="{{ path('app_patient_show', {'id': patient.id}) }}" class="badge bg-gradient-info text-white">Show</a>
+                                <a href="{{ path('app_patient_edit', {'id': patient.id}) }}" class="badge bg-gradient-danger text-white">Edit</a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="6" class="text-center">No records found</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

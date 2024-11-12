@@ -1,0 +1,40 @@
+{% extends 'Master/welcome.html.twig' %}
+
+{% block title %}Consultation Details{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <a href="{{ path('app_consultation_index') }}" class="btn btn-secondary mb-3">Back to list</a>
+
+        <div class="card">
+            <div class="card-body">
+                <h4 class="font-weight-bolder text-center">Consultation Details</h4>
+
+                <div class="row mt-4">
+                    <div class="col-md-6">
+                        <p><strong>Date:</strong> {{ consultation.date|date('Y-m-d') }}</p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>Patient:</strong> {{ consultation.patient.firstName }} {{ consultation.patient.lastName }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Doctor:</strong> {{ consultation.doctor.firstName }} {{ consultation.doctor.lastName }}</p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <p><strong>Description:</strong> {{ consultation.description }}</p>
+                    </div>
+                </div>
+
+                <div class="text-center mt-4">
+                    <a href="{{ path('app_consultation_edit', {'id': consultation.id}) }}" class="btn btn-primary">Edit Consultation</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

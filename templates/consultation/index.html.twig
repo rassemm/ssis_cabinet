@@ -1,0 +1,67 @@
+{% extends 'Master/welcome.html.twig' %}
+
+{% block title %}Consultation Index{% endblock %}
+
+{% block body %}
+<div class="card my-4">
+    <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+        <div class="bg-gradient-dark shadow-dark border-radius-lg pt-4 pb-3">
+            <h6 class="text-white text-capitalize ps-3">Consultation Index</h6>
+        </div>
+    </div>
+
+    <div class="card-body px-0 pb-2">
+        <div class="table-responsive p-0">
+            <div class="d-flex justify-content-end px-3 pb-3">
+                <a href="{{ path('app_consultation_new') }}" class="btn btn-success">Create New</a>
+            </div>
+            
+            <table class="table align-items-center mb-0">
+                <thead>
+                    <tr>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Id</th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Date</th>
+                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Description</th>
+                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Doctor</th>
+                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Patient</th>
+                        <th class="text-secondary opacity-7"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for consultation in consultations %}
+                        <tr>
+                            <td>
+                                <div class="d-flex px-2 py-1">
+                                    <div class="d-flex flex-column justify-content-center">
+                                        <h6 class="mb-0 text-sm">{{ consultation.id }}</h6>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="align-middle text-center">
+                                <span class="text-secondary text-xs font-weight-bold">{{ consultation.Date ? consultation.Date|date('Y-m-d') : '' }}</span>
+                            </td>
+                            <td class="align-middle text-center">
+                                <span class="text-secondary text-xs font-weight-bold">{{ consultation.Description }}</span>
+                            </td>
+                            <td class="align-middle text-center">
+                                <span class="text-secondary text-xs font-weight-bold">{{ consultation.Doctor ? consultation.Doctor.getName() : '' }}</span>
+                            </td>
+                            <td class="align-middle text-center">
+                                <span class="text-secondary text-xs font-weight-bold">{{ consultation.Patient ? consultation.Patient.getName() : '' }}</span>
+                            </td>
+                            <td class="align-middle">
+                                <a href="{{ path('app_consultation_show', {'id': consultation.id}) }}" class="badge bg-gradient-info text-white">Show</a>
+                                <a href="{{ path('app_consultation_edit', {'id': consultation.id}) }}" class="badge bg-gradient-danger text-white">Edit</a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="6" class="text-center">No records found</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
