@@ -1,0 +1,70 @@
+{% extends 'Master/welcome.html.twig' %}
+
+{% block title %}New User{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <a href="{{ path('app_user_index') }}" class="btn btn-secondary mb-3">Back to list</a>
+
+    <div class="card">
+        <div class="card-body">
+            <h4 class="font-weight-bolder text-center">Create User</h4>
+            
+            {{ form_start(form, {'attr': {'role': 'form', 'class': 'form-horizontal'}}) }}
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        {{ form_label(form.email, 'Email', {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                </div>
+               <div class="col-md-6">
+              <div class="mb-3">
+                  {{ form_label(form.plainPassword, 'Mot de passe', {'label_attr': {'class': 'form-label'}}) }}
+                  {{ form_widget(form.plainPassword, {'attr': {'class': 'form-control'}}) }}
+                  {{ form_errors(form.plainPassword) }}
+              </div>
+          </div>
+            </div>
+             <div class="row">
+             <div class="col-md-12">
+                 <div class="mb-3">
+                     <label class="form-label">Rôles</label>
+                     <div class="d-flex flex-wrap">
+                         {% for choice in form.roles %}
+                             <div class="form-check me-3">
+                                 {{ form_widget(choice, {'attr': {'class': 'form-check-input'}}) }}
+                                 {{ form_label(choice, null, {'label_attr': {'class': 'form-check-label'}}) }}
+                             </div>
+                         {% endfor %}
+                     </div>
+                 </div>
+             </div>
+         </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="mb-3">
+                        <label class="form-label">Selected Roles:</label>
+                        {% for role in form.roles.vars.value %}
+                            {% if role == 'ROLE_ADMIN' %}
+                                <span class="badge bg-gradient-info text-white">Admin</span>
+                            {% elseif role == 'ROLE_USER' %}
+                                <span class="badge bg-gradient-success text-white">User</span>
+                            {% else %}
+                                <span class="badge bg-gradient-secondary text-white">{{ role }}</span>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-4">
+                <button type="submit" class="btn btn-dark w-100">Save User</button>
+            </div>
+            
+            {{ form_end(form) }}
+        </div>
+    </div>
+</div>
+{% endblock %}

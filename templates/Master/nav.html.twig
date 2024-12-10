@@ -2,7 +2,7 @@
     <div class="container-fluid py-1 px-3">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
-                <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">Pages</a></li>
+                <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="{{ path('admin_dashboard') }}">Pages</a></li>
                 <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Dashboard</li>
             </ol>
         </nav>
@@ -14,20 +14,26 @@
                 </div>
             </div>
             <ul class="navbar-nav d-flex align-items-center  justify-content-end">
-                <!-- Doctor Link -->
-                <li class="nav-item d-flex align-items-center">
-                    <a class="btn btn-outline-primary btn-sm mb-0 me-3" href="{{ path('app_doctor_index') }}">Doctors</a>
-                </li>
-
-                <!-- Patient Link -->
-                <li class="nav-item d-flex align-items-center">
-                    <a class="btn btn-outline-primary btn-sm mb-0 me-3" href="{{ path('app_patient_index') }}">Patients</a>
-                </li>
-
-                <!-- Consultation Link -->
-                <li class="nav-item d-flex align-items-center">
-                    <a class="btn btn-outline-primary btn-sm mb-0 me-3" href="{{ path('app_consultation_index') }}">Consultations</a>
-                </li>
+                  {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+        <li class="nav-item d-flex align-items-center">
+            <a class="btn btn-outline-primary btn-sm mb-0 me-3" href="{{ path('app_doctor_index') }}">Doctors</a>
+        </li>
+        <li class="nav-item d-flex align-items-center">
+            <a class="btn btn-outline-primary btn-sm mb-0 me-3" href="{{ path('app_patient_index') }}">Patients</a>
+        </li>
+        <li class="nav-item d-flex align-items-center">
+            <a class="btn btn-outline-primary btn-sm mb-0 me-3" href="{{ path('app_consultation_index') }}">Consultations</a>
+        </li>
+           {% if is_granted('ROLE_ADMIN') %}
+               <li class="nav-item d-flex align-items-center">
+                   <a class="btn btn-outline-primary btn-sm mb-0 me-3" href="{{ path('app_user_index') }}">User Management</a>
+               </li>
+           {% endif %}
+       {% else %}
+           <li class="nav-item d-flex align-items-center">
+               <a class="btn btn-primary btn-sm mb-0 me-3" href="{{ path('app_login') }}">Login</a>
+           </li>
+       {% endif %}
 
                 <!-- Commented Out Old Routes -->
                 <!-- <li class="nav-item d-flex align-items-center">

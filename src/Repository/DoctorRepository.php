@@ -21,28 +21,13 @@ class DoctorRepository extends ServiceEntityRepository
         parent::__construct($registry, Doctor::class);
     }
 
-//    /**
-//     * @return Doctor[] Returns an array of Doctor objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('d')
-//            ->andWhere('d.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('d.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?Doctor
-//    {
-//        return $this->createQueryBuilder('d')
-//            ->andWhere('d.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    public function countConsultationsByDoctor(): array
+{
+    return $this->createQueryBuilder('d')
+    ->select('d.id, d.firstName, COUNT(c.id) AS consultationCount')
+    ->leftJoin('d.consultations', 'c') 
+    ->groupBy('d.id, d.firstName')
+    ->getQuery()
+    ->getResult();
+}
 }

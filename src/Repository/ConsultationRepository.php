@@ -20,29 +20,24 @@ class ConsultationRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Consultation::class);
     }
-
-//    /**
-//     * @return Consultation[] Returns an array of Consultation objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('c.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?Consultation
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    public function findConsultationsByDoctor()
+    {
+        return $this->createQueryBuilder('c')
+            ->select('d.firstName AS doctor_name', 'COUNT(c.id) AS consultations_by_doctor')
+            ->leftJoin('c.doctor', 'd')
+            ->groupBy('d.id')
+            ->orderBy('consultations_by_doctor', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+    public function findConsultationsByPatient()
+    {
+        return $this->createQueryBuilder('c')
+            ->select('p.firstName AS patient_name', 'COUNT(c.id) AS consultations_by_patient')
+            ->leftJoin('c.patient', 'p')
+            ->groupBy('p.id')
+            ->orderBy('consultations_by_patient', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
 }

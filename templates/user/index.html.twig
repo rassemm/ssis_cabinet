@@ -1,0 +1,68 @@
+{% extends 'Master/welcome.html.twig' %}
+
+{% block title %}Gestion des utilisateurs{% endblock %}
+
+{% block body %}
+<div class="card my-4">
+    <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+        <div class="bg-gradient-dark shadow-dark border-radius-lg pt-4 pb-3">
+            <h6 class="text-white text-capitalize ps-3">Gestion des utilisateurs</h6>
+        </div>
+    </div>
+
+    <div class="card-body px-0 pb-2">
+        <div class="table-responsive p-0">
+            <div class="d-flex justify-content-end px-3 pb-3">
+                <a href="{{ path('app_user_new') }}" class="btn btn-success">Créer un nouvel utilisateur</a>
+            </div>
+            
+            <table class="table align-items-center mb-0">
+                <thead>
+                    <tr>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">ID</th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Email</th>
+                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Rôles</th>
+                        <th class="text-secondary opacity-7"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                        <tr>
+                            <td>
+                                <div class="d-flex px-2 py-1">
+                                    <div class="d-flex flex-column justify-content-center">
+                                        <h6 class="mb-0 text-sm">{{ user.id }}</h6>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <p class="text-xs font-weight-bold mb-0">{{ user.email }}</p>
+                            </td>
+                            <td class="align-middle text-center text-sm">
+                                 {% for role in user.roles %}
+                                     {% if role == 'ROLE_ADMIN' %}
+                                         <span class="badge bg-gradient-info text-white">{{ 'Admin' }}</span>
+                                     {% elseif role == 'ROLE_USER' %}
+                                         <span class="badge bg-gradient-success text-white">{{ 'User' }}</span>
+                                     {% else %}
+                                         <span class="badge bg-gradient-secondary text-white">{{ role }}</span>
+                                     {% endif %}
+                                 {% endfor %}
+                             </td>
+                            <td class="align-middle">
+                                <a href="{{ path('app_user_edit', {'id': user.id}) }}" class="badge bg-gradient-danger text-white">Modifier</a>
+                                <a href="{{ path('app_user_delete', {'id': user.id}) }}" class="badge bg-gradient-warning text-white"
+                                   onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?');">Supprimer</a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="4" class="text-center">Aucun utilisateur trouvé</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
