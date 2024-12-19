@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\Doctor;
-use App\Repository\AppointmentRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -48,15 +47,5 @@ class ContentController extends AbstractController
         ]);
     }
 
-    #[Route('/doctor/{id}', name: 'doctor_appointments')]
-    public function doctorAppointments(Doctor $doctor, AppointmentRepository $appointmentRepository): Response
-    {
-        $today = new \DateTime();
-        $appointments = $appointmentRepository->findByDoctorAndDate($doctor, $today);
     
-        return $this->render('content/doctor_appointments.html.twig', [
-            'doctor' => $doctor,
-            'appointments' => $appointments,
-        ]);
-    }
 }

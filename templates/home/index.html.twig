@@ -120,6 +120,46 @@
         </div>
     </div>
 </footer>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const ageInput = document.querySelector('#form_age');
+    const dateOfBirthInput = document.querySelector('#form_dateOfBirth');
+    const submitButton = document.querySelector('button[type="submit"]');
+    
+    function calculateAge(dateOfBirth) {
+        const today = new Date();
+        const birthDate = new Date(dateOfBirth);
+        let age = today.getFullYear() - birthDate.getFullYear();
+        const monthDiff = today.getMonth() - birthDate.getMonth();
+
+        // Ajuster si la date d'anniversaire n'est pas encore passée cette année
+        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
+        }
+
+        return age;
+    }
+
+    function validateAgeAndDateOfBirth() {
+        const age = parseInt(ageInput.value, 10);
+        const dateOfBirth = dateOfBirthInput.value;
+
+        if (dateOfBirth) {
+            const calculatedAge = calculateAge(dateOfBirth);
+            if (age !== calculatedAge) {
+                alert(`L'âge saisi (${age}) ne correspond pas à la date de naissance (${dateOfBirth}).`);
+                submitButton.disabled = true; // Désactiver le bouton de soumission
+            } else {
+                submitButton.disabled = false; // Activer le bouton si tout est bon
+            }
+        }
+    }
+
+    ageInput.addEventListener('input', validateAgeAndDateOfBirth);
+    dateOfBirthInput.addEventListener('input', validateAgeAndDateOfBirth);
+});
+</script>
+
 <style>
     .carousel-caption {
       position: absolute;

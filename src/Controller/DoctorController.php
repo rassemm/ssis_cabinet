@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Doctor;
 use App\Form\DoctorType;
+use App\Repository\AppointmentRepository;
 use App\Repository\DoctorRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -77,5 +78,15 @@ class DoctorController extends AbstractController
         }
 
         return $this->redirectToRoute('app_doctor_index', [], Response::HTTP_SEE_OTHER);
+    }
+    #[Route('/doctor/appointement/{id}', name: 'doctor_appointments')]
+    public function doctorAppointments(Doctor $doctor, AppointmentRepository $appointmentRepository): Response
+    {
+        $today = new \DateTime();
+        $appointments = $appointmentRepository->findByDoctorAndDate($doctor, $today);
+        return $this->render('content/doctor_appointments.html.twig', [
+            'doctor' => $doctor,
+            'appointments' => $appointments,
+        ]);
     }
 }
