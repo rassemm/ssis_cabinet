@@ -41,9 +41,16 @@ class Doctor
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $dateOfBirth = null;
 
+    #[ORM\OneToMany(targetEntity: Appointment::class, mappedBy: 'doctor')]
+    private Collection $appointments;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $specialty = null;
+
     public function __construct()
     {
         $this->consultations = new ArrayCollection();
+        $this->appointments = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -162,5 +169,47 @@ class Doctor
 
         return $this;
         
+    }
+
+    /**
+     * @return Collection<int, Appointment>
+     */
+    public function getAppointments(): Collection
+    {
+        return $this->appointments;
+    }
+
+    public function addAppointment(Appointment $appointment): static
+    {
+        if (!$this->appointments->contains($appointment)) {
+            $this->appointments->add($appointment);
+            $appointment->setDoctor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAppointment(Appointment $appointment): static
+    {
+        if ($this->appointments->removeElement($appointment)) {
+            // set the owning side to null (unless already changed)
+            if ($appointment->getDoctor() === $this) {
+                $appointment->setDoctor(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getSpecialty(): ?string
+    {
+        return $this->specialty;
+    }
+
+    public function setSpecialty(?string $specialty): static
+    {
+        $this->specialty = $specialty;
+
+        return $this;
     }
 }

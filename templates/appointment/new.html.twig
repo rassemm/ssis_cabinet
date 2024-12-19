@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouveau Rendez-vous{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1 class="mt-5">Prendre un rendez-vous</h1>
+
+        {{ form_start(form) }}
+            {{ form_row(form.date) }}
+            {{ form_row(form.doctor) }}
+            {{ form_row(form.patient) }}
+            <button type="submit" class="btn btn-primary mt-3">Enregistrer</button>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

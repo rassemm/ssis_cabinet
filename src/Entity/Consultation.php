@@ -25,8 +25,12 @@ class Consultation
     #[ORM\JoinColumn(nullable: false)]
     private ?Doctor $doctor = null;  // Idem ici, changer "Doctor" en "doctor"
 
-    #[ORM\Column(type: Types::TEXT)]
-    private ?string $description = null;  // Correction ici : "Desciption" -> "description"
+    #[ORM\OneToOne(targetEntity: Appointment::class, inversedBy: 'consultation')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Appointment $appointment = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $description = null;
 
     public function getId(): ?int
     {
@@ -78,6 +82,16 @@ class Consultation
     {
         $this->description = $description;
 
+        return $this;
+    }
+    public function getAppointment(): ?Appointment
+    {
+        return $this->appointment;
+    }
+
+    public function setAppointment(?Appointment $appointment): self
+    {
+        $this->appointment = $appointment;
         return $this;
     }
 }

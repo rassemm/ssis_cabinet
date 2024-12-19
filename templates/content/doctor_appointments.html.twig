@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Rendez-vous de {{ doctor.name }}{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <h2 class="text-primary mb-4">Salle d'attente - Dr {{ doctor.name }}</h2>
+    <p class="lead">Rendez-vous pour le {{ "now"|date("d/m/Y") }}</p>
+
+    {% if appointments is not empty %}
+        <ul class="list-group">
+            {% for appointment in appointments %}
+                <li class="list-group-item">
+                    <strong>Patient : </strong>{{ appointment.patient.firstName }} {{ appointment.patient.lastName }}
+                    <br>
+                    <!-- <strong>Heure : </strong>{{ appointment.date|date('H:i') }} -->
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="text-muted">Aucun rendez-vous pour aujourd'hui.</p>
+    {% endif %}
+</div>
+{% endblock %}

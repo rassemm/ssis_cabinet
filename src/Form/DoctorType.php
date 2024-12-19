@@ -18,6 +18,7 @@ class DoctorType extends AbstractType
             ->add('email')
             ->add('phone')
             ->add('adresse')
+            ->add('specialty')
             ->add('dateOfBirth', DateType::class, [
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',

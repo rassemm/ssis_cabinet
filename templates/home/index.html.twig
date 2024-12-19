@@ -1,0 +1,139 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+
+    <!-- CAROUSEL -->
+   <section class="mb-5">
+       <div id="doctorCarousel" class="carousel slide mb-5" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="/images/doctor.jpg" class="d-block w-100" alt="Cabinet médical">
+                <div class="carousel-caption d-none d-md-block">
+                    <h5>Bienvenue chez le Dr </h5>
+                    <p>Un environnement accueillant pour tous les patients.</p>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="/images/waiting-room.jpg" class="d-block w-100" alt="Salle d'attente">
+                <div class="carousel-caption d-none d-md-block">
+                    <h5>Salle d'attente moderne</h5>
+                    <p>Confort et sérénité pour votre visite.</p>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="/images/medical-team.jpg" class="d-block w-100" alt="Équipe médicale">
+                <div class="carousel-caption d-none d-md-block">
+                    <h5>Notre équipe</h5>
+                    <p>Des professionnels prêts à vous accompagner.</p>
+                </div>
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#doctorCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Précédent</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#doctorCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Suivant</span>
+        </button>
+    </div>
+    </section>
+    <!-- SECTION : À propos -->
+    <section class="text-center mb-5">
+        <h2 class="text-primary"><i class="fas fa-stethoscope me-2"></i> À propos de notre cabinet</h2>
+        <p class="lead">Bienvenue dans notre cabinet médical où nous offrons des soins de qualité pour tous nos patients.</p>
+    </section>
+
+    <!-- SECTION : Nos docteurs -->
+    <section class="mb-5">
+        <h2 class="text-primary text-center"><i class="fas fa-user-md me-2"></i> Nos docteurs</h2>
+        <div class="row">
+            {% for doctor in doctors %}
+                <div class="col-md-4 mb-4">
+                    <div class="card shadow-sm border-0">
+                        <div class="card-body text-center">
+                            <i class="fas fa-user-circle fa-4x mb-3 text-secondary"></i>
+                            <h5 class="card-title">{{ doctor.firstName }}{{ doctor.lastName }}</h5>
+                            <p class="card-text">Spécialité : {{ doctor.specialty }}</p>
+                        </div>
+                        <a href="{{ path('doctor_appointments', { id: doctor.id }) }}" class="btn btn-primary">
+                            Voir la salle d'attente
+                        </a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- SECTION : Formulaire de rendez-vous -->
+    <section class="mb-5">
+        <h2 class="text-primary text-center"><i class="fas fa-calendar-check me-2"></i> Prendre un rendez-vous</h2>
+        <div class="card shadow-sm">
+            <div class="card-body">
+                {{ form_start(form) }}
+                <div class="row">
+                    <div class="col-md-6">
+                        <h4>Informations Patient</h4>
+                        {{ form_row(form.firstName) }}
+                        {{ form_row(form.lastName) }}
+                        {{ form_row(form.age) }}
+                        {{ form_row(form.dateOfBirth) }}
+                        {{ form_row(form.medicalHistory) }}
+                    </div>
+                    <div class="col-md-6">
+                        <h4>Informations Rendez-vous</h4>
+                        {{ form_row(form.appointmentDate) }}
+                        {{ form_row(form.doctor) }}
+                    </div>
+                </div>
+                {{ form_row(form._token) }}
+                <div class="text-center mt-3">
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-save me-2"></i> Créer un rendez-vous</button>
+                </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </section>
+
+</div>
+
+<!-- FOOTER -->
+<footer class="bg-dark text-white py-4 mt-5">
+    <div class="container d-flex justify-content-between align-items-center">
+        <!-- Bouton de navigation vers le tableau de bord -->
+        <div>
+            <a href="{{ path('admin_dashboard') }}" class="btn btn-outline-light">
+                <i class="fas fa-tachometer-alt me-2"></i> Accéder au tableau de bord
+            </a>
+        </div>
+        <div class="text-center">
+            <p class="mb-0">&copy; 2024 Notre Cabinet Médical. Tous droits réservés.</p>
+        </div>
+        <div>
+            <a href="#" class="text-white me-3"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="text-white me-3"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="text-white me-3"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="text-white"><i class="fas fa-envelope"></i></a>
+        </div>
+    </div>
+</footer>
+<style>
+    .carousel-caption {
+      position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: black; /* Couleur du texte */
+    text-align: center; /* Centre le texte horizontalement */
+    background-color: rgba(255, 255, 255, 0.05); /* Fond blanc semi-transparent */
+    padding: 20px; /* Ajoute de l'espace à l'intérieur du cadre */
+    border-radius: 10px; /* Coins arrondis */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Ombre pour améliorer la lisibilité */
+    max-width: 80%; /* Limite la largeur pour s'adapter à l'image */
+}
+
+    </style>
+{% endblock %}

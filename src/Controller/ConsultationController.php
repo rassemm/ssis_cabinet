@@ -10,15 +10,29 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 #[Route('/consultation')]
 class ConsultationController extends AbstractController
 {
+    private $entityManager;
+
+    // Injection de l'EntityManager via le constructeur
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
     #[Route('/', name: 'app_consultation_index', methods: ['GET'])]
     public function index(ConsultationRepository $consultationRepository): Response
     {
+        $consultations = $consultationRepository->createQueryBuilder('c')
+            ->leftJoin('c.appointment', 'a')
+            ->addSelect('a')
+            ->getQuery()
+            ->getResult();
+    
         return $this->render('consultation/index.html.twig', [
-            'consultations' => $consultationRepository->findAll(),
+            'consultations' => $consultations,
         ]);
     }
 
@@ -50,21 +64,20 @@ class ConsultationController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_consultation_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Consultation $consultation, EntityManagerInterface $entityManager): Response
+    #[Route('/consultation/edit/{id}', name: 'consultation_edit')]
+    public function edit(Request $request, Consultation $consultation): Response
     {
         $form = $this->createForm(ConsultationType::class, $consultation);
         $form->handleRequest($request);
-
+    
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_consultation_index', [], Response::HTTP_SEE_OTHER);
+            $this->entityManager->flush();
+            return $this->redirectToRoute('app_consultation_index');
         }
-
-        return $this->renderForm('consultation/edit.html.twig', [
+    
+        return $this->render('consultation/edit.html.twig', [
             'consultation' => $consultation,
-            'form' => $form,
+            'form' => $form->createView(),
         ]);
     }
 

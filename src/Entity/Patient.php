@@ -33,6 +33,9 @@ class Patient
 
     #[ORM\OneToMany(mappedBy: 'Patient', targetEntity: Consultation::class)]
     private iterable $consultations;
+
+    #[ORM\OneToMany(targetEntity: Appointment::class, mappedBy: 'patient')]
+    private Collection $patient;
     public function getFullName(): string
     {
         return $this->firstName . ' ' . $this->lastName;
@@ -40,6 +43,7 @@ class Patient
     public function __construct()
     {
         $this->consultations = new ArrayCollection();
+        $this->patient = new ArrayCollection();
     }
 
     // Méthode pour accéder à l'ID du patient
@@ -157,5 +161,35 @@ class Patient
     public function __toString(): string
     {
         return $this->firstName . ' ' . $this->lastName;
+    }
+
+    /**
+     * @return Collection<int, Appointment>
+     */
+    public function getPatient(): Collection
+    {
+        return $this->patient;
+    }
+
+    public function addPatient(Appointment $patient): static
+    {
+        if (!$this->patient->contains($patient)) {
+            $this->patient->add($patient);
+            $patient->setPatient($this);
+        }
+
+        return $this;
+    }
+
+    public function removePatient(Appointment $patient): static
+    {
+        if ($this->patient->removeElement($patient)) {
+            // set the owning side to null (unless already changed)
+            if ($patient->getPatient() === $this) {
+                $patient->setPatient(null);
+            }
+        }
+
+        return $this;
     }
 }
